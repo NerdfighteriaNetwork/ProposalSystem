@@ -13,6 +13,7 @@ CREATE  TABLE IF NOT EXISTS `proposalSystem`.`users` (
   `Username` VARCHAR(45) NOT NULL ,
   `Email` VARCHAR(45) NOT NULL ,
   `Password` VARCHAR(45) NOT NULL ,
+  `Confirmed` BIT NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`UID`) ,
   UNIQUE INDEX `UID_UNIQUE` (`UID` ASC) ,
   UNIQUE INDEX `Username_UNIQUE` (`Username` ASC) ,
