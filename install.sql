@@ -13,8 +13,8 @@ CREATE  TABLE IF NOT EXISTS `proposalSystem`.`users` (
   `Username` VARCHAR(45) NOT NULL ,
   `Email` VARCHAR(45) NOT NULL ,
   `Password` VARCHAR(45) NOT NULL ,
+  `Confirmed` BIT NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`UID`) ,
-  UNIQUE INDEX `UID_UNIQUE` (`UID` ASC) ,
   UNIQUE INDEX `Username_UNIQUE` (`Username` ASC) ,
   UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) )
 ENGINE = InnoDB;
@@ -28,7 +28,6 @@ CREATE  TABLE IF NOT EXISTS `proposalSystem`.`categories` (
   `Name` VARCHAR(45) NOT NULL ,
   `Abbr` VARCHAR(3) NOT NULL ,
   PRIMARY KEY (`idcategories`) ,
-  UNIQUE INDEX `idcategories_UNIQUE` (`idcategories` ASC) ,
   UNIQUE INDEX `Name_UNIQUE` (`Name` ASC) ,
   UNIQUE INDEX `Abbr_UNIQUE` (`Abbr` ASC) )
 ENGINE = InnoDB;
@@ -48,7 +47,6 @@ CREATE  TABLE IF NOT EXISTS `proposalSystem`.`proposals` (
   `users_UID` INT UNSIGNED NOT NULL ,
   `categories_idcategories` INT UNSIGNED NOT NULL ,
   PRIMARY KEY (`idproposals`) ,
-  UNIQUE INDEX `idproposals_UNIQUE` (`idproposals` ASC) ,
   INDEX `fk_proposals_users` (`users_UID` ASC) ,
   INDEX `fk_proposals_categories1` (`categories_idcategories` ASC) ,
   CONSTRAINT `fk_proposals_users`
@@ -68,3 +66,16 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `proposalSystem`.`categories`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `proposalSystem`;
+INSERT INTO `proposalSystem`.`categories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'General', 'GEN');
+INSERT INTO `proposalSystem`.`categories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'IRC', 'IRC');
+INSERT INTO `proposalSystem`.`categories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'Website', 'WEB');
+INSERT INTO `proposalSystem`.`categories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'Minecraft', 'MC');
+INSERT INTO `proposalSystem`.`categories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'TeamSpeak', 'TS');
+
+COMMIT;
