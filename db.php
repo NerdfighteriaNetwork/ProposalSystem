@@ -69,6 +69,7 @@ class db {
         }
 
         $qry = "SELECT `Proposal_ID` FROM ".$conf['sql']['table_prefix']."proposals WHERE `categories_idcategories` = '".$CID."' ORDER BY `Proposal_ID` DESC LIMIT 1";
+        $result = mysql_query($qry);
         if($result !== FALSE){
             if(mysql_num_rows($result) == 0){
                 $id = 1;
