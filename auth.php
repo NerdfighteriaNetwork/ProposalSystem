@@ -13,6 +13,7 @@ class auth {
     }
     function getUserID(){
         //placeholder, int expected.
+        return 1;
     }
 }
 ?>
