@@ -43,7 +43,7 @@ class db {
          * All parameters are assumed SQL-safe.
         */
         global $conf;
-        if(!$auth->isLoggedIn()){
+        if(!$this->auth->isLoggedIn()){
             return array(1, "Not logged in.");
         }
 
@@ -69,7 +69,7 @@ class db {
         }
 
         $date = mktime (0, 0, 0); //set date to be midnight today
-        $UID = $auth->getUserID(); //get the current logged in User ID
+        $UID = $this->auth->getUserID(); //get the current logged in User ID
 
         //insert this shit into the database, yo.
         $qry = sprintf("INSERT INTO ".$conf['sql']['table_prefix']."proposals (`Proposal_ID`, `Action`, `Date`, `Summary`, `is_rev`, `parent_ID`, ".
