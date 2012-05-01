@@ -12,11 +12,11 @@ $result = $db->propose($action, $category, $summary);
 
 if(isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'])
 {
-	header( "Location: ".substr($_SERVER['HTTP_REFERER'],0,strrpos($_SERVER['HTTP_REFERER'],"/"))."?result=".base64_encode("(code: ".$result[0]."): ".$result[1]) );
+	header( "Location: ".substr($_SERVER['HTTP_REFERER'],0,strrpos($_SERVER['HTTP_REFERER'],"/"))."?result=".base64_encode($result[1]) );
 }
 else
 {
-	header( "Location: ".substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/"))."?result=".base64_encode("(code: ".$result[0]."): ".$result[1]) );
+	header( "Location: ".substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/"))."?result=".base64_encode($result[1]) );
 }
 $db->close();
 ?>

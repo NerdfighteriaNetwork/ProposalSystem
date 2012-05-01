@@ -92,7 +92,7 @@ class db {
         if($result !== FALSE){
             return array(0, "Success");
         }else{
-            return array(5, "Proposal could not be posted.".$qry);
+            return array(5, "Proposal could not be posted.");
         }
     }
 

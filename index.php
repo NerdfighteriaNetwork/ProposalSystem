@@ -21,9 +21,14 @@ $categories = $db->getCategories();
 if($db->auth->isLoggedIn())
 {
 ?>
+<div style="position:absolute;top:5px;left:5px;text-align:left;">
 <form action="logout.php" method="post">
-<input style="position:absolute;top:5px;left:5px;" type="submit" name="logout" value="Logout" />
+<input type="submit" name="logout" value="Logout" />
 </form>
+<form action="view.php" method="post">
+<input type="submit" name="view" value="View Proposals" />
+</form>
+</div>
 <form action="post.php" method="post">
 <table>
 <tr>
@@ -36,14 +41,14 @@ if($db->auth->isLoggedIn())
 </tr>
 <tr>
 	<td>Action (Title):</td>
-	<td><input type="text" name="action" /></td>
+	<td><input style="width:300px;" type="text" name="action" /></td>
 </tr>
 <tr>
-	<td>Summary (Proposal Body):</td>
-	<td><textarea name="summary"></textarea></td>
+	<td style="vertical-align:top;">Summary (Proposal Body):</td>
+	<td><textarea style="width:400px;height:250px;" name="summary"></textarea></td>
 </tr>
 <tr>
-	<td colspan="2"><input type="submit" name="post" value="Post" /></td>
+	<td colspan="2" align="right"><input type="submit" name="post" value="Post" /></td>
 </tr>
 </table>
 </form>
@@ -66,7 +71,7 @@ else
 	<td><input type="password" name="password" /></td>
 </tr>
 <tr>
-	<td colspan="2"><input type="submit" name="login" value="Login" /></td>
+	<td colspan="2" align="right"><input type="submit" name="register" value="Register" /><input type="submit" name="login" value="Login" /></td>
 </tr>
 </table>
 </form>
