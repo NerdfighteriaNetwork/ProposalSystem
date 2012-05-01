@@ -68,13 +68,13 @@ class db {
             return array(4, "Summary is empty.");
         }
 
-        $qry = "SELECT `Proposal_ID` FROM ".$conf['sql']['table_prefix']."proposals WHERE `categories_idcategories` == '".$CID."' ORDER BY `Proposal_ID` DESC LIMIT 1";
+        $qry = "SELECT `Proposal_ID` FROM ".$conf['sql']['table_prefix']."proposals WHERE `categories_idcategories` = '".$CID."' ORDER BY `Proposal_ID` DESC LIMIT 1";
         if($result !== FALSE){
             if(mysql_num_rows($result) == 0){
-                return array(6, "Could not get Proposal ID.");
+                $id = 1;
             }else{
                 $id = mysql_fetch_row($result);
-                $id = $id[0];
+                $id = $id[0]+1;
             }
         }else{
             return array(6, "Could not get Proposal ID.");
