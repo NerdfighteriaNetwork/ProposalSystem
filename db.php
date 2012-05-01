@@ -43,7 +43,7 @@ class db {
          * All parameters are assumed SQL-safe.
         */
         global $conf;
-        if(!$auth->isLoggedIn()){
+        if(!$this->$auth->isLoggedIn()){
             return array(1, "Not logged in.");
         }
 
@@ -68,8 +68,20 @@ class db {
             return array(4, "Summary is empty.");
         }
 
+        $qry = "SELECT `Proposal_ID` FROM ".$conf['sql']['table_prefix']."proposals WHERE `categories_idcategories` == '".$CID."' ORDER BY `Proposal_ID` DESC LIMIT 1";
+        if($result !== FALSE){
+            if(mysql_num_rows($result) == 0){
+                return array(6, "Could not get Proposal ID.");
+            }else{
+                $id = mysql_fetch_row($result);
+                $id = $id[0];
+            }
+        }else{
+            return array(6, "Could not get Proposal ID.");
+        }
+
         $date = mktime (0, 0, 0); //set date to be midnight today
-        $UID = $auth->getUserID(); //get the current logged in User ID
+        $UID = $this->$auth->getUserID(); //get the current logged in User ID
 
         //insert this shit into the database, yo.
         $qry = sprintf("INSERT INTO ".$conf['sql']['table_prefix']."proposals (`Proposal_ID`, `Action`, `Date`, `Summary`, `is_rev`, `parent_ID`, ".
@@ -79,7 +91,7 @@ class db {
         if($result !== FALSE){
             return array(0, "Success");
         }else{
-            return array(5, "Proposal could not be posted.");
+            return array(5, "Proposal could not be posted.".$qry);
         }
     }
 
