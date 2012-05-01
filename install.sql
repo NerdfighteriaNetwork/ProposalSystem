@@ -62,6 +62,30 @@ CREATE  TABLE IF NOT EXISTS `proposalSystem`.`proposals` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `proposalSystem`.`votes`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `proposalSystem`.`votes` (
+  `idvotes` INT NOT NULL AUTO_INCREMENT ,
+  `Votes` TINYINT(1) UNSIGNED NOT NULL ,
+  `users_UID` INT UNSIGNED NOT NULL ,
+  `proposals_idproposals` INT UNSIGNED NOT NULL ,
+  PRIMARY KEY (`idvotes`) ,
+  INDEX `fk_votes_users1` (`users_UID` ASC) ,
+  INDEX `fk_votes_proposals1` (`proposals_idproposals` ASC) ,
+  CONSTRAINT `fk_votes_users1`
+    FOREIGN KEY (`users_UID` )
+    REFERENCES `proposalSystem`.`users` (`UID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_votes_proposals1`
+    FOREIGN KEY (`proposals_idproposals` )
+    REFERENCES `proposalSystem`.`proposals` (`idproposals` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
