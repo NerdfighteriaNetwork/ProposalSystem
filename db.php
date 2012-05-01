@@ -3,7 +3,6 @@
 (require_once "auth.php") or die("auth.php is not found.");
 class db {
     public $auth;
-    private $sql;
     private $link;
     
     function __construct() {
@@ -11,27 +10,31 @@ class db {
          * This function is the constructor.
          * $auth is required to be defined here.
         */
-    	global $conf;
-    	$this->auth = new auth;
-    	$this->sql = $conf['sql'];
+        global $conf;
+        $this->auth = new auth;
     }
     
-    function connect()
-    {
-    	global $conf;
-    	$this->link = mysql_connect($conf['sql']['server'], $conf['sql']['user'], $conf['sql']['pass']);
-    	if (!$this->link) {
-    		die('Could not connect: ' . mysql_error());
-    	}
-    	if(!mysql_select_db($conf['sql']['database']))
-    	{
-    		die('Could select database: ' . mysql_error());
-    	}
+    function connect() {
+        /*
+         * This function starts a connection to the SQL database.
+        */
+        global $conf;
+        $this->link = mysql_connect($conf['sql']['server'], $conf['sql']['user'], $conf['sql']['pass']);
+        if (!$this->link){
+            return array(1, "Could not connect: " . mysql_error());
+        }elseif(!mysql_select_db($conf['sql']['database'])){
+            return array(2, "Could select database: " . mysql_error());
+        }else{
+            return array(0, "Success");
+        }
     }
-    function close()
-    {
-    	global $conf;
-    	mysql_close($this->link);
+
+    function close() {
+        /*
+         * This function stops a connection to the SQL database, if any.
+        */
+        global $conf;
+        mysql_close($this->link);
     }
 
     function propose($action, $category, $summary) {
@@ -39,23 +42,26 @@ class db {
          * This function inserts a new proposal into the database.
          * All parameters are assumed SQL-safe.
         */
-    	global $conf;
-        if(!$auth->isLoggedIn()) {
+        global $conf;
+        if(!$auth->isLoggedIn()){
             return array(1, "Not logged in.");
         }
 
-        
         if(preg_match('/^\s*$/', $action)){
             return array(2, "Action is empty.");
         }
 
-        $qry = "SELECT idcategories AS 'CID' FROM ".$conf['table_prefix']."categories WHERE Abbr = '".$category."'";
+        $qry = "SELECT idcategories AS 'CID' FROM ".$conf['sql']['table_prefix']."categories WHERE Abbr = '".$category."'";
         $result = mysql_query($qry);
-        if(mysql_num_rows($result) == 0) {
-            return array(3, "Category is invalid.");
+        if($result !== FALSE){
+            if(mysql_num_rows($result) == 0){
+                return array(3, "Category is invalid.");
+            }else{
+                $CID = mysql_fetch_row($result);
+                $CID = $CID[0];
+            }
         }else{
-            $CID = mysql_fetch_row($result);
-            $CID = $CID[0];
+            return array(3, "Category is invalid.");
         }
 
         if($summary == ''){
@@ -66,29 +72,29 @@ class db {
         $UID = $auth->getUserID(); //get the current logged in User ID
 
         //insert this shit into the database, yo.
-        $qry = sprintf("INSERT INTO ".$conf['table_prefix']."proposals (`Proposal_ID`, `Action`, `Date`, `Summary`, `is_rev`, `parent_ID`, ".
+        $qry = sprintf("INSERT INTO ".$conf['sql']['table_prefix']."proposals (`Proposal_ID`, `Action`, `Date`, `Summary`, `is_rev`, `parent_ID`, ".
             "`users_UID`, `categories_idcategories`) VALUES ('%s', '%s', '%s', '%s', '0', NULL, '%s', '%s');",
             $id, $action, $date, $summary, $UID, $CID);
-
-        return array(0, "Success");
+        $result = mysql_query($qry);
+        if($result !== FALSE){
+            return array(0, "Success");
+        }else{
+            return array(5, "Proposal could not be posted.");
+        }
     }
 
     function getCategories() {
         /*
          * this function will return an enum array of assoc arrays, containing the abbrevation (abbr) and names (name) of each category.
-         * Example: array(0 => array('abbr' => 'GEN', 'name' => 'General'), 0 => array('abbr' => 'WEB', 'name' => 'Website'))
         */
-    	global $conf;
-        $qry = "SELECT Name AS 'name', Abbr AS 'abbr' FROM ".$this->sql['table_prefix']."categories ORDER BY name ASC";
+        global $conf;
+        $qry = "SELECT Name AS 'name', Abbr AS 'abbr' FROM ".$conf['sql']['table_prefix']."categories ORDER BY name ASC";
         $result = mysql_query($qry);
-        if($result !== FALSE)
-        {
-        	while($return[] = mysql_fetch_assoc($result));
-        	unset($return[count($return)-1]);
-        }
-        else
-        {
-        	$return[] = array("name" => "error", "abbr" => "error");
+        if($result !== FALSE){
+            while($return[] = mysql_fetch_assoc($result));
+            unset($return[count($return)-1]);
+        }else{
+            $return[] = array("name" => "error", "abbr" => "ERR");
         }
         return $return;
     }
