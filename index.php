@@ -1,7 +1,11 @@
 <?php
 (require "include.php") or die("include.php is not found.");
 $db = new db;
-$db->connect();
+$result = $db->connect();
+if(isset($result[0]) && $result[0])
+{
+	die("Error (code: ".$result[0]."): ".$result[1]);
+}
 $categories = $db->getCategories();
 ?><!DOCTYPE unspecified PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -12,6 +16,7 @@ $categories = $db->getCategories();
 <body>
 
 <center>
+<?php echo base64_decode($_GET['result']); ?>
 <?php
 if($db->auth->isLoggedIn())
 {
@@ -65,7 +70,7 @@ else
 </tr>
 </table>
 </form>
-<?php 	
+<?php
 }
 ?>
 </center>
