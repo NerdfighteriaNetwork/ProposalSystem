@@ -1,4 +1,5 @@
 <?php 
+session_start();
 // change the following to the desired Website Title (<title></title>)
 $conf['Title'] = "Nerdfighteria Network Proposal System";
 
@@ -10,5 +11,5 @@ $conf['sql']['database'] = "proposalSystem";
 $conf['sql']['table_prefix'] = "PS_";
 
 // Comment out the next line by putting // in front of it!
-die("Yo, idiot. Read the damn config file!");
+die("Hey... Read the config file!");
 ?>
