@@ -48,7 +48,7 @@ if($db->auth->isLoggedIn())
 	<td><textarea style="width:400px;height:250px;" name="summary"></textarea></td>
 </tr>
 <tr>
-	<td colspan="2" align="right"><input type="submit" name="post" value="Post" /></td>
+	<td colspan="2" align="right"><?php date_default_timezone_set('UTC'); echo "Submit before ".date("H:i \U\T\C", $_SESSION['loggedin']+1800)." or you will be logged out." ?><input type="submit" name="post" value="Post" /></td>
 </tr>
 </table>
 </form>
