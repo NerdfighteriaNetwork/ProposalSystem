@@ -5,13 +5,13 @@ class db {
     public $auth;
     private $link;
     
-    function __construct($authclass) {
+    function __construct() {
         /*
          * This function is the constructor.
          * $auth is required to be defined here.
         */
         global $conf;
-        $this->auth = $authclass;
+        $this->auth = new auth;
     }
     
     function connect() {
@@ -110,6 +110,21 @@ class db {
             $return[] = array("name" => "error", "abbr" => "ERR");
         }
         return $return;
+    }
+    
+    function lookupUser($user)
+    {
+    	global $conf;
+    	$qry = "SELECT * FROM users WHERE `Username` = '".$user."'";
+    	$result = mysql_query($qry);
+    	if($result !== FALSE)
+    	{
+    		return mysql_fetch_assoc($result);
+    	}
+    	else
+    	{
+    		return array(-1, mysql_error());
+    	}
     }
 }
 ?>
