@@ -5,13 +5,13 @@ class db {
     public $auth;
     private $link;
     
-    function __construct() {
+    function __construct($authclass) {
         /*
          * This function is the constructor.
          * $auth is required to be defined here.
         */
         global $conf;
-        $this->auth = new auth;
+        $this->auth = $authclass;
     }
     
     function connect() {
