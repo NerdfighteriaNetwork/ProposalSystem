@@ -148,6 +148,7 @@ class db {
 
         if(mysql_num_rows($result)){
             while($data[] = mysql_fetch_assoc($result));
+            array_pop($data); //remove the null.
             return array(0,$data);
         }else{
             return array(1,'no results');
