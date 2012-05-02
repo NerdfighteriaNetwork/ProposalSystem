@@ -146,10 +146,15 @@ class db {
 
         $result = mysql_query($select.$where.$orderBy);
         
-        if(mysql_num_rows($result)){
-            return array(0,$data);
+        $data = mysql_fetch_assoc($result);
+        if(is_array($data)){
+            if(mysql_num_rows($result)){
+                return array(0,$data);
+            }else{
+                return array(1,'no results');
+            }
         }else{
-            return array(1,'no results');
+            return array(2,"Something went wrong with your request.");
         }
     }
  
