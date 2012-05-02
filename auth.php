@@ -3,8 +3,9 @@
 class auth {
     function isLoggedIn()
     {
-    	if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'])
+    	if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] >= time()-1800)
     	{
+    		$_SESSION['loggedin'] = time();
         	return 1;
     	}
     	return 0; //catch all as not logged in
