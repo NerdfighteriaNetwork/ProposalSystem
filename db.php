@@ -147,9 +147,7 @@ class db {
         $result = mysql_query($select.$where.$orderBy);
 
         if(mysql_num_rows($result)){
-            for($i=mysql_num_rows($result); $i>1; $i--){
-                $data[] = mysql_fetch_assoc($result);
-            }
+            while($data[] = mysql_fetch_assoc($result));
             return array(0,$data);
         }else{
             return array(1,'no results');
