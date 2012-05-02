@@ -2,6 +2,12 @@
 (require_once 'config.php') or die('Configuration is not set.');
 (require_once "auth.php") or die("auth.php is not found.");
 class db {
+    /*
+     * TODO:
+     * Grab all proposals, limit by pages.
+     * Search proposals.
+     * Select proposals from category.
+    */
     public $auth;
     private $link;
     
@@ -111,7 +117,42 @@ class db {
         }
         return $return;
     }
-    
+
+    function listProposals($filter = array(), $sortBy = 'Date', $order = 'DESC', $lowerLimit = 0, $upperLimit = 0) {
+        //filter = 'propID', 'Cat', 'ID', 'Action', 'Date', 'Summary'
+        $select = "SELECT `proposals`.`idproposals`, `categories`.`Abbr`, `proposals`.`Proposal_ID`, `proposals`.`Action`, `categories`.`Name` AS Category,".
+            "`proposals`.`Date`, `users`.`Username` AS Author, `proposals`.`Summary`, `proposals`.`parent_ID` FROM `proposals`, `categories`, `users` ";
+        $where = "WHERE `users`.`UID` = `proposals`.`users_UID` AND `categories`.`idcategories` = `proposals`.`categories_idcategories` ";
+        $orderBy = sprintf("ORDER BY `proposals`.`%s` %s", $sortBy, $order);
+
+        if(isset($filter['propID'])){
+            $where .= sprintf("AND `proposals`.`idproposals` = %s ", $filter['propID']);
+        }
+        if(isset($filter['Cat'])){
+            $where .= sprintf("AND `categories`.`Abbr` = %s ", $filter['Cat']);
+        }
+        if(isset($filter['ID'])){
+            $where .= sprintf("AND `proposals`.`Proposal_ID` = %s ", $filter['ID']);
+        }
+        if(isset($filter['Action'])){
+            $where .= sprintf("AND `proposals`.`Action` = %s ", $filter['Action']);
+        }
+        if(isset($filter['Date'])){
+            $where .= sprintf("AND `proposals`.`Date` = %s ", $filter['Date']);
+        }
+        if(isset($filter['Summary'])){
+            $where .= sprintf("AND `proposals`.`Summary` = %s ", $filter['Summary']);
+        }
+
+        $result = mysql_query($select.$where.$orderBy);
+        
+        if(mysql_num_rows($result)){
+            return array(0,$data);
+        }else{
+            return array(1,'no results');
+        }
+    }
+ 
     function lookupUser($user)
     {
     	global $conf;
@@ -119,12 +160,12 @@ class db {
     	$result = mysql_query($qry);
     	if($result !== FALSE)
     	{
-    		return mysql_fetch_assoc($result);
+    		return array(0, mysql_fetch_assoc($result));
     	}
     	else
     	{
     		return array(-1, mysql_error());
-    	}
+        }
     }
 }
 ?>
