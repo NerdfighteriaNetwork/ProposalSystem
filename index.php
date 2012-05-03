@@ -1,5 +1,9 @@
 <?php
 (require "include.php") or die("include.php is not found.");
+if(file_exists("install.php") || file_exists("install.sql"))
+{
+	die("Be sure to run install.php! If you already have, delete both install.php and install.sql");
+}
 $db = new db;
 $result = $db->connect();
 if(isset($result[0]) && $result[0])
