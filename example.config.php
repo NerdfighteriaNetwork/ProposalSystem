@@ -1,13 +1,20 @@
 <?php 
-// change the following to the desired Website Title (<title></title>)
-$conf['Title'] = "Nerdfighteria Network Proposal System";
+/* install.php expects the following:
+ * lines that contain configuration setting start with $ (no tabs, no spaces!)
+ * conf array keys have single quotes.
+ * there is one equal(=) symbol
+ * after the ; there is a space, followed by // and the meaning of the setting.
+*/
+
+//general settings
+$conf['title'] = "Nerdfighteria Network Proposal System"; //The desired website title
 
 // mysql variables
-$conf['sql']['user'] = "root";
-$conf['sql']['pass'] = "";
-$conf['sql']['server'] = "localhost";
-$conf['sql']['database'] = "proposalSystem";
-$conf['sql']['table_prefix'] = "PS_";
+$conf['sql']['user'] = "root"; //MySQL Username
+$conf['sql']['pass'] = ""; //MySQL Password
+$conf['sql']['server'] = "localhost"; //MySQL Server address
+$conf['sql']['database'] = "proposalSystem"; //MySQL database name
+$conf['sql']['pre'] = "PS_"; //if used, all tables in the database will have this prefix. (helpful to avoid collisions in databases used for more than 1 purpose.)
 
 //password encryption settings.
 $conf['salt']['useFile'] = FALSE; //If this is TRUE, passwords will use salt.php to generate a salt. This file is not open-source for security reasons.
