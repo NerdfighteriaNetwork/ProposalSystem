@@ -1,5 +1,4 @@
 <?php 
-session_start();
 // change the following to the desired Website Title (<title></title>)
 $conf['Title'] = "Nerdfighteria Network Proposal System";
 
