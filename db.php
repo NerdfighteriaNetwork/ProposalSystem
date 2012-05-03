@@ -51,7 +51,7 @@ class db {
             return array(2, "Action is empty.");
         }
 
-        $qry = "SELECT idcategories AS 'CID' FROM ".$conf['sql']['table_prefix']."categories WHERE Abbr = '".$category."'";
+        $qry = "SELECT idcategories AS 'CID' FROM ".$conf['sql']['pre']."categories WHERE Abbr = '".$category."'";
         $result = mysql_query($qry);
         if($result !== FALSE){
             if(mysql_num_rows($result) == 0){
@@ -68,7 +68,7 @@ class db {
             return array(4, "Summary is empty.");
         }
 
-        $qry = "SELECT `Proposal_ID` FROM ".$conf['sql']['table_prefix']."proposals WHERE `categories_idcategories` = '".$CID."' ORDER BY `Proposal_ID` DESC LIMIT 1";
+        $qry = "SELECT `Proposal_ID` FROM ".$conf['sql']['pre']."proposals WHERE `categories_idcategories` = '".$CID."' ORDER BY `Proposal_ID` DESC LIMIT 1";
         $result = mysql_query($qry);
         if($result !== FALSE){
             if(mysql_num_rows($result) == 0){
@@ -85,7 +85,7 @@ class db {
         $UID = $this->auth->getUserID(); //get the current logged in User ID
 
         //insert this shit into the database, yo.
-        $qry = sprintf("INSERT INTO ".$conf['sql']['table_prefix']."proposals (`Proposal_ID`, `Action`, `Date`, `Summary`, `is_rev`, `parent_ID`, ".
+        $qry = sprintf("INSERT INTO ".$conf['sql']['pre']."proposals (`Proposal_ID`, `Action`, `Date`, `Summary`, `is_rev`, `parent_ID`, ".
             "`users_UID`, `categories_idcategories`) VALUES ('%s', '%s', '%s', '%s', '0', NULL, '%s', '%s');",
             $id, $action, $date, $summary, $UID, $CID);
         $result = mysql_query($qry);
@@ -106,7 +106,7 @@ class db {
             return array(1, "Not logged in.");
         }
 
-        $qry = "SELECT `Proposal_ID` FROM ".$conf['sql']['table_prefix']."proposals WHERE `idproposals` = '".$parent."'";
+        $qry = "SELECT `Proposal_ID` FROM ".$conf['sql']['pre']."proposals WHERE `idproposals` = '".$parent."'";
         $result = mysql_query($qry);
         if($result !== FALSE){
             if(mysql_num_rows($result) == 0){
@@ -123,7 +123,7 @@ class db {
             return array(2, "Action is empty.");
         }
 
-        $qry = "SELECT idcategories AS 'CID' FROM ".$conf['sql']['table_prefix']."categories WHERE Abbr = '".$category."'";
+        $qry = "SELECT idcategories AS 'CID' FROM ".$conf['sql']['pre']."categories WHERE Abbr = '".$category."'";
         $result = mysql_query($qry);
         if($result !== FALSE){
             if(mysql_num_rows($result) == 0){
@@ -144,7 +144,7 @@ class db {
         $UID = $this->auth->getUserID(); //get the current logged in User ID
 
         //insert this shit into the database, yo.
-        $qry = sprintf("INSERT INTO ".$conf['sql']['table_prefix']."proposals (`Proposal_ID`, `Action`, `Date`, `Summary`, `parent_ID`, ".
+        $qry = sprintf("INSERT INTO ".$conf['sql']['pre']."proposals (`Proposal_ID`, `Action`, `Date`, `Summary`, `parent_ID`, ".
             "`users_UID`, `categories_idcategories`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s');",
             $id, $action, $date, $summary, $parent, $UID, $CID);
         $result = mysql_query($qry);
@@ -160,7 +160,7 @@ class db {
          * this function will return an enum array of assoc arrays, containing the abbrevation (abbr) and names (name) of each category.
         */
         global $conf;
-        $qry = "SELECT Name AS 'name', Abbr AS 'abbr' FROM ".$conf['sql']['table_prefix']."categories ORDER BY name ASC";
+        $qry = "SELECT Name AS 'name', Abbr AS 'abbr' FROM ".$conf['sql']['pre']."categories ORDER BY name ASC";
         $result = mysql_query($qry);
         if($result !== FALSE){
             while($return[] = mysql_fetch_assoc($result));
@@ -173,7 +173,7 @@ class db {
 
     function listProposals($filter = array(), $sortBy = 'Date', $order = 'DESC', $lowerLimit = 0, $upperLimit = 0) {
         //filter = 'propID', 'Cat', 'ID', 'Action', 'Date', 'Summary'
-        $pre = $conf['sql']['table_prefix'];
+        $pre = $conf['sql']['pre'];
         $select = "SELECT `".$pre."proposals`.`idproposals`, `".$pre."categories`.`Abbr`, `".$pre."proposals`.`Proposal_ID`, `".$pre."proposals`.`Action`, `".$pre."categories`.`Name` AS Category,".
             "`".$pre."proposals`.`Date`, `".$pre."users`.`Username` AS Author, `".$pre."proposals`.`Summary`, `".$pre."proposals`.`parent_ID` FROM `".$pre."proposals`, `".$pre."categories`, `".$pre."users` ";
         $where = "WHERE `".$pre."users`.`UID` = `".$pre."proposals`.`users_UID` AND `".$pre."categories`.`idcategories` = `".$pre."proposals`.`categories_idcategories` ";
@@ -211,13 +211,13 @@ class db {
  
     function lookupUser($user)
     {
-    	global $conf;
-    	$qry = "SELECT * FROM ".$conf['sql']['table_prefix']."users WHERE `Username` = '".$user."'";
-    	$result = mysql_query($qry);
-    	if($result !== FALSE){
-    		return array(0, mysql_fetch_assoc($result));
-    	}else{
-    		return array(-1, mysql_error());
+        global $conf;
+        $qry = "SELECT * FROM ".$conf['sql']['pre']."users WHERE `Username` = '".$user."'";
+        $result = mysql_query($qry);
+        if($result !== FALSE){
+            return array(0, mysql_fetch_assoc($result));
+        }else{
+            return array(-1, mysql_error());
         }
     }
 }
