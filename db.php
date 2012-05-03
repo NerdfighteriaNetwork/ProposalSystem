@@ -2,12 +2,6 @@
 (require_once 'config.php') or die('Configuration is not set.');
 (require_once "auth.php") or die("auth.php is not found.");
 class db {
-    /*
-     * TODO:
-     * Grab all proposals, limit by pages.
-     * Search proposals.
-     * Select proposals from category.
-    */
     public $auth;
     private $link;
     
@@ -102,6 +96,65 @@ class db {
         }
     }
 
+    function revise($action, $category, $summary, $parent) {
+        /*
+         * This function inserts a new proposal into the database.
+         * All parameters are assumed SQL-safe.
+        */
+        global $conf;
+        if(!$this->auth->isLoggedIn()){
+            return array(1, "Not logged in.");
+        }
+
+        $qry = "SELECT `Proposal_ID` FROM ".$conf['sql']['table_prefix']."proposals WHERE `idproposals` = '".$parent."'";
+        $result = mysql_query($qry);
+        if($result !== FALSE){
+            if(mysql_num_rows($result) == 0){
+                return array(7, "Invalid Parent ID.");
+            }else{
+                $id = mysql_fetch_row($result);
+                $id = $id[0];
+            }
+        }else{
+            return array(6, "Could not get Proposal ID.");
+        }
+
+        if(preg_match('/^\s*$/', $action)){
+            return array(2, "Action is empty.");
+        }
+
+        $qry = "SELECT idcategories AS 'CID' FROM ".$conf['sql']['table_prefix']."categories WHERE Abbr = '".$category."'";
+        $result = mysql_query($qry);
+        if($result !== FALSE){
+            if(mysql_num_rows($result) == 0){
+                return array(3, "Category is invalid.");
+            }else{
+                $CID = mysql_fetch_row($result);
+                $CID = $CID[0];
+            }
+        }else{
+            return array(3, "Category is invalid.");
+        }
+
+        if($summary == ''){
+            return array(4, "Summary is empty.");
+        }
+
+        $date = mktime (0, 0, 0); //set date to be midnight today
+        $UID = $this->auth->getUserID(); //get the current logged in User ID
+
+        //insert this shit into the database, yo.
+        $qry = sprintf("INSERT INTO ".$conf['sql']['table_prefix']."proposals (`Proposal_ID`, `Action`, `Date`, `Summary`, `parent_ID`, ".
+            "`users_UID`, `categories_idcategories`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s');",
+            $id, $action, $date, $summary, $parent, $UID, $CID);
+        $result = mysql_query($qry);
+        if($result !== FALSE){
+            return array(0, "Success");
+        }else{
+            return array(5, "Proposal could not be posted.");
+        }
+    }
+
     function getCategories() {
         /*
          * this function will return an enum array of assoc arrays, containing the abbrevation (abbr) and names (name) of each category.
@@ -120,28 +173,29 @@ class db {
 
     function listProposals($filter = array(), $sortBy = 'Date', $order = 'DESC', $lowerLimit = 0, $upperLimit = 0) {
         //filter = 'propID', 'Cat', 'ID', 'Action', 'Date', 'Summary'
-        $select = "SELECT `proposals`.`idproposals`, `categories`.`Abbr`, `proposals`.`Proposal_ID`, `proposals`.`Action`, `categories`.`Name` AS Category,".
-            "`proposals`.`Date`, `users`.`Username` AS Author, `proposals`.`Summary`, `proposals`.`parent_ID` FROM `proposals`, `categories`, `users` ";
-        $where = "WHERE `users`.`UID` = `proposals`.`users_UID` AND `categories`.`idcategories` = `proposals`.`categories_idcategories` ";
-        $orderBy = sprintf("ORDER BY `proposals`.`%s` %s", $sortBy, $order);
+        $pre = $conf['sql']['table_prefix'];
+        $select = "SELECT `".$pre."proposals`.`idproposals`, `".$pre."categories`.`Abbr`, `".$pre."proposals`.`Proposal_ID`, `".$pre."proposals`.`Action`, `".$pre."categories`.`Name` AS Category,".
+            "`".$pre."proposals`.`Date`, `".$pre."users`.`Username` AS Author, `".$pre."proposals`.`Summary`, `".$pre."proposals`.`parent_ID` FROM `".$pre."proposals`, `".$pre."categories`, `".$pre."users` ";
+        $where = "WHERE `".$pre."users`.`UID` = `".$pre."proposals`.`users_UID` AND `".$pre."categories`.`idcategories` = `".$pre."proposals`.`categories_idcategories` ";
+        $orderBy = sprintf("ORDER BY `".$pre."proposals`.`%s` %s", $sortBy, $order);
 
         if(isset($filter['propID'])){
-            $where .= sprintf("AND `proposals`.`idproposals` = %s ", $filter['propID']);
+            $where .= sprintf("AND `".$pre."proposals`.`idproposals` = %s ", $filter['propID']);
         }
         if(isset($filter['Cat'])){
-            $where .= sprintf("AND `categories`.`Abbr` = %s ", $filter['Cat']);
+            $where .= sprintf("AND `".$pre."categories`.`Abbr` = %s ", $filter['Cat']);
         }
         if(isset($filter['ID'])){
-            $where .= sprintf("AND `proposals`.`Proposal_ID` = %s ", $filter['ID']);
+            $where .= sprintf("AND `".$pre."proposals`.`Proposal_ID` = %s ", $filter['ID']);
         }
         if(isset($filter['Action'])){
-            $where .= sprintf("AND `proposals`.`Action` = %s ", $filter['Action']);
+            $where .= sprintf("AND `".$pre."proposals`.`Action` = %s ", $filter['Action']);
         }
         if(isset($filter['Date'])){
-            $where .= sprintf("AND `proposals`.`Date` = %s ", $filter['Date']);
+            $where .= sprintf("AND `".$pre."proposals`.`Date` = %s ", $filter['Date']);
         }
         if(isset($filter['Summary'])){
-            $where .= sprintf("AND `proposals`.`Summary` = %s ", $filter['Summary']);
+            $where .= sprintf("AND `".$pre."proposals`.`Summary` = %s ", $filter['Summary']);
         }
 
         $result = mysql_query($select.$where.$orderBy);
@@ -158,14 +212,11 @@ class db {
     function lookupUser($user)
     {
     	global $conf;
-    	$qry = "SELECT * FROM users WHERE `Username` = '".$user."'";
+    	$qry = "SELECT * FROM ".$conf['sql']['table_prefix']."users WHERE `Username` = '".$user."'";
     	$result = mysql_query($qry);
-    	if($result !== FALSE)
-    	{
+    	if($result !== FALSE){
     		return array(0, mysql_fetch_assoc($result));
-    	}
-    	else
-    	{
+    	}else{
     		return array(-1, mysql_error());
         }
     }
