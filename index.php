@@ -60,6 +60,11 @@ if($db->auth->isLoggedIn())
 else
 {
 ?>
+<div style="position:absolute;top:5px;left:5px;text-align:left;">
+<form action="view.php" method="post">
+<input type="submit" name="view" value="View Proposals" />
+</form>
+</div>
 <form action="login.php" method="post">
 <table>
 <tr>
