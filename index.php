@@ -29,8 +29,8 @@ if($db->auth->isLoggedIn())
 <form action="logout.php" method="post">
 <input type="submit" name="logout" value="Logout" />
 </form>
-<form action="view.php" method="post">
-<input type="submit" name="view" value="View Proposals" />
+<form action="view.php" method="get">
+<input type="submit" value="View Proposals" />
 </form>
 </div>
 <form action="post.php" method="post">
@@ -65,8 +65,8 @@ else
 {
 ?>
 <div style="position:absolute;top:5px;left:5px;text-align:left;">
-<form action="view.php" method="post">
-<input type="submit" name="view" value="View Proposals" />
+<form action="view.php" method="get">
+<input type="submit" value="View Proposals" />
 </form>
 </div>
 <form action="login.php" method="post">
