@@ -33,6 +33,9 @@ class auth {
 	function register($user, $email, $pass)
 	{
 		global $conf;
+		if($pass == ''){
+			return array(1, "Password is empty.");
+		}
 		$qry = sprintf("INSERT INTO ".$conf['sql']['pre']."users (`Username`, `Email`, `Password`, `Confirmed`)".
 				" VALUES ('%s', '%s', MD5('%s'), %u);",
 				$user, $email, $pass, 0);
