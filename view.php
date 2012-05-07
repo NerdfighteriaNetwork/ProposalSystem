@@ -36,7 +36,7 @@ if(isset($proplist['parent_ID']) && $proplist['parent_ID'])
 	$parent = $db->listProposals(array('propID' => $proplist['parent_ID']));
 	if(isset($parent[1][0]))
 	{
-		echo " - Revised (".$parent[1][0]['Abbr']."-".str_pad($parent[1][0]['Proposal_ID'],3,'0',STR_PAD_LEFT).")";
+		echo "a - Revised (".$parent[1][0]['Abbr']."-".str_pad($parent[1][0]['Proposal_ID'],3,'0',STR_PAD_LEFT).")";
 	}
 	else
 	{
