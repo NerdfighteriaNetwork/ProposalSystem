@@ -140,7 +140,7 @@ class db {
             return array(4, "Summary is empty.");
         }
 
-        $date = mktime (0, 0, 0); //set date to be midnight today
+        $date = time(); //set date to be current time
         $UID = $this->auth->getUserID(); //get the current logged in User ID
 
         //insert this shit into the database, yo.
