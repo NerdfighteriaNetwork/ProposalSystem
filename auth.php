@@ -42,6 +42,8 @@ class auth {
         $subject = 'Confirmation Email';
         $message = '<html>';
         $message .= '<body>';
+        $message .= 'You have successfully registered with the Nerdfighteria Network Proposal System.<br />';
+        $message .= 'Please follow the link below to confirm your account:<br />';
         $message .= '<a href="'.'http://'.$_SERVER['SERVER_NAME'].'/'.substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/")).'confirm.php?email='.$email.'&code='.$this->randStr().'">'
         	.'http://'.$_SERVER['SERVER_NAME'].'/'.substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/")).'confirm.php?email='.$email.'&code='.$this->randStr().'</a>';
         $message .= '</body>';
