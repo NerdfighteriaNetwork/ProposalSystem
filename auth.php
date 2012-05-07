@@ -52,8 +52,9 @@ class auth {
         		'Reply-To: no-reply@staff.dftba.net' . "\r\n" .
         		'Return-Path: no-reply@staff.dftba.net' . "\r\n" .
         		'X-Mailer: PHP/' . phpversion();
+        $args = '-fno-reply@staff.dftba.net -rno-reply@staff.dftba.net';
         
-        mail($to, $subject, $message, $headers);
+        mail($to, $subject, $message, $headers, $args);
         
         if($result !== FALSE)
         {
