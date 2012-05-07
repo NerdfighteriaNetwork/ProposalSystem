@@ -124,7 +124,7 @@ class auth {
         $result = mysql_query($qry);
         if($result !== FALSE)
         {
-    		$list = mysql_fetch_assoc();
+    		$list = mysql_fetch_assoc($result);
     		$email = $list['Email'];
             return array(0, $email);
         }

@@ -24,7 +24,7 @@ $categories = $db->getCategories();
 <?php
 if($db->auth->isLoggedIn())
 {
-	if(substr($_SERVER['HTTP_REFERER'],strrpos($_SESSION['email'],"@")) == "staff.dftba.net")
+	if(substr($_SESSION['email'],strrpos($_SESSION['email'],"@")) == "@staff.dftba.net")
 	{
 ?>
 <div style="position:absolute;top:5px;left:5px;text-align:left;">
@@ -76,7 +76,6 @@ if($db->auth->isLoggedIn())
 </div>
 You are not a staff member.
 <?php
-	echo $_SESSION['email'];
 	}
 }
 else
