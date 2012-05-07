@@ -7,6 +7,6 @@ if(isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'])
 }
 else
 {
-	header( "Location: ".substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],"/")) );
+	header( "Location: ".'http://'.$_SERVER['SERVER_NAME'].'/'.substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],"/")) );
 }
 ?>

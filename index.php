@@ -24,6 +24,8 @@ $categories = $db->getCategories();
 <?php
 if($db->auth->isLoggedIn())
 {
+	if(substr($_SERVER['HTTP_REFERER'],strrpos($_SESSION['email'],"@")) == "staff.dftba.net")
+	{
 ?>
 <div style="position:absolute;top:5px;left:5px;text-align:left;">
 <form action="logout.php" method="post">
@@ -60,6 +62,22 @@ if($db->auth->isLoggedIn())
 </table>
 </form>
 <?php
+	}
+	else
+	{
+?>
+<div style="position:absolute;top:5px;left:5px;text-align:left;">
+<form action="logout.php" method="post">
+<input type="submit" name="logout" value="Logout" />
+</form>
+<form action="view.php" method="get">
+<input type="submit" value="View Proposals" />
+</form>
+</div>
+You are not a staff member.
+<?php
+	echo $_SESSION['email'];
+	}
 }
 else
 {
@@ -83,7 +101,7 @@ else
 	<td><input type="password" name="password" /></td>
 </tr>
 <tr>
-	<td colspan="2" align="right"><input type="submit" name="register" value="Register" /><input type="submit" name="login" value="Login" /></td>
+	<td colspan="2" align="right"><a href="register.php">Register</a> <input type="submit" name="login" value="Login" /></td>
 </tr>
 </table>
 </form>
