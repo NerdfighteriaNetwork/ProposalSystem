@@ -130,7 +130,7 @@ class auth {
         }
         else
         {
-            return array(5, "Error confirming username with that confirmation code.");
+            return array(-1, "Error");
         }
         //placeholder, int expected.
     }
@@ -142,7 +142,18 @@ class auth {
     function getUserID()
     {
 		global $conf;
-        //placeholder, int expected.
+		$qry = "SELECT `UID` FROM ".$conf['sql']['pre']."users WHERE `Email` = '".$_SESSION['email']."'";
+		$result = mysql_query($qry);
+		if($result !== FALSE)
+		{
+			$list = mysql_fetch_assoc($result);
+			$id = $list['UID'];
+			return $id;
+		}
+		else
+		{
+			return array(-1, "Error");
+		}
     }
 }
 ?>
