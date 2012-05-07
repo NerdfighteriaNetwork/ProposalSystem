@@ -21,11 +21,11 @@ if($props[0])
 <a href="<?php
 		if(isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'])
 		{
-			echo substr($_SERVER['HTTP_REFERER'],0,strrpos($_SERVER['HTTP_REFERER'],"/"));
+			echo $_SERVER['HTTP_REFERER'];
 		}
 		else
 		{
-			echo substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/"));
+			echo 'http://'.$_SERVER['SERVER_NAME'].'/'.substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/"));
 		}?>">Back</a><br />
 Proposals are ordered Most Recent (top) to Oldest (bottom).<br />
 <br />

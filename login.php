@@ -21,7 +21,7 @@ if(isset($_POST['login']))
 		}
 		else
 		{
-			header( "Location: ".substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/"))  );
+			header( "Location: ".'http://'.$_SERVER['SERVER_NAME'].'/'.substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/"))  );
 		}
 	}
 	else
@@ -32,7 +32,7 @@ if(isset($_POST['login']))
 		}
 		else
 		{
-			header( "Location: ".substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/"))."?result=".base64_encode($result[1])  );
+			header( "Location: ".'http://'.$_SERVER['SERVER_NAME'].'/'.substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/"))."?result=".base64_encode($result[1])  );
 		}
 	}
 }
