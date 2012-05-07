@@ -29,7 +29,20 @@ foreach($props[1] as $proplist)
 <table border="1" style="width:100%;">
 <tr>
 <td>ID:</td>
-<td style="width:80%;"><?php echo $proplist['Abbr']."-".str_pad($proplist['Proposal_ID'],3,'0',STR_PAD_LEFT); ?></td>
+<td style="width:80%;"><?php
+echo $proplist['Abbr']."-".str_pad($proplist['Proposal_ID'],3,'0',STR_PAD_LEFT);
+if(isset($proplist['parent_ID']) && $proplist['parent_ID'])
+{
+	$parent = $db->listProposals(array('propID' => $proplist['parent_ID']));
+	if(isset($parent[1][0]))
+	{
+		echo " - Revised (".$parent[1][0]['Abbr']."-".str_pad($parent[1][0]['parent_ID'],3,'0',STR_PAD_LEFT).")";
+	}
+	else
+	{
+		echo " - Possible error: inform webmaster.";
+	}
+} ?></td>
 </tr>
 <tr>
 <td>ACTION:</td>
