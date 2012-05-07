@@ -50,6 +50,7 @@ class auth {
         $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
         $headers .= 'From: "DFTBA no-reply" <no-reply@staff.dftba.net>' . "\r\n" .
         		'Reply-To: no-reply@staff.dftba.net' . "\r\n" .
+        		'Return-Path: no-reply@staff.dftba.net' . "\r\n" .
         		'X-Mailer: PHP/' . phpversion();
         
         mail($to, $subject, $message, $headers);
