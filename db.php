@@ -170,6 +170,23 @@ class db {
         }
         return $return;
     }
+    
+    function parseFilter($column, $unparsed) /// todo: alter for both 'AND' and 'OR' (currently only does 'OR')
+    {
+    	$parsedArray = explode(",",$unparsed);
+    	$count = count($parsedArray);
+    	$return = "(";
+    	foreach($parsedArray as $num => $parsed)
+    	{
+    		$return .= $column." = ".$parsed;
+    		if($num - 1 < $count)
+    		{
+    			$return .= " OR ";
+    		}
+    	}
+    	$return .= ") ";
+    	return $return;
+    }
 
     function listProposals($filter = array(), $sortBy = 'Date', $order = 'DESC', $lowerLimit = 0, $upperLimit = 0) {
         //filter = 'propID', 'Cat', 'ID', 'Action', 'Date', 'Summary'
@@ -180,22 +197,22 @@ class db {
         $orderBy = sprintf("ORDER BY `".$pre."proposals`.`%s` %s", $sortBy, $order);
 
         if(isset($filter['propID'])){
-            $where .= sprintf("AND `".$pre."proposals`.`idproposals` = %s ", $filter['propID']);
+            $where .= "AND ".$this->parseFilter("`".$pre."proposals`.`idproposals`", $filter['propID']);
         }
         if(isset($filter['Cat'])){
-            $where .= sprintf("AND `".$pre."categories`.`Abbr` = %s ", $filter['Cat']);
+            $where .= "AND ".$this->parseFilter("`".$pre."categories`.`Abbr`", $filter['Cat']);
         }
         if(isset($filter['ID'])){
-            $where .= sprintf("AND `".$pre."proposals`.`Proposal_ID` = %s ", $filter['ID']);
+            $where .= "AND ".$this->parseFilter("`".$pre."proposals`.`Proposal_ID`", $filter['ID']);
         }
         if(isset($filter['Action'])){
-            $where .= sprintf("AND `".$pre."proposals`.`Action` = %s ", $filter['Action']);
+            $where .= "AND ".$this->parseFilter("`".$pre."proposals`.`Action`", $filter['Action']);
         }
         if(isset($filter['Date'])){
-            $where .= sprintf("AND `".$pre."proposals`.`Date` = %s ", $filter['Date']);
+            $where .= "AND ".$this->parseFilter("`".$pre."proposals`.`Date`", $filter['Date']);
         }
         if(isset($filter['Summary'])){
-            $where .= sprintf("AND `".$pre."proposals`.`Summary` = %s ", $filter['Summary']);
+            $where .= "AND ".$this->parseFilter("`".$pre."proposals`.`Summary`", $filter['Summary']);
         }
 
         $result = mysql_query($select.$where.$orderBy);
