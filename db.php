@@ -173,13 +173,14 @@ class db {
     
     function parseFilter($column, $unparsed) /// todo: alter for both 'AND' and 'OR' (currently only does 'OR')
     {
+    	global $conf;
     	$parsedArray = explode(",",$unparsed);
     	$count = count($parsedArray);
     	$return = "(";
     	foreach($parsedArray as $num => $parsed)
     	{
-    		$return .= $column." = ".$parsed;
-    		if($num - 1 < $count)
+    		$return .= $column." = '".$parsed."'";
+    		if($num < $count - 1)
     		{
     			$return .= " OR ";
     		}
@@ -190,6 +191,7 @@ class db {
 
     function listProposals($filter = array(), $sortBy = 'Date', $order = 'DESC', $lowerLimit = 0, $upperLimit = 0) {
         //filter = 'propID', 'Cat', 'ID', 'Action', 'Date', 'Summary'
+    	global $conf;
         $pre = $conf['sql']['pre'];
         $select = "SELECT `".$pre."proposals`.`idproposals`, `".$pre."categories`.`Abbr`, `".$pre."proposals`.`Proposal_ID`, `".$pre."proposals`.`Action`, `".$pre."categories`.`Name` AS Category,".
             "`".$pre."proposals`.`Date`, `".$pre."users`.`Username` AS Author, `".$pre."proposals`.`Summary`, `".$pre."proposals`.`parent_ID` FROM `".$pre."proposals`, `".$pre."categories`, `".$pre."users` ";
@@ -211,8 +213,11 @@ class db {
         if(isset($filter['Date'])){
             $where .= "AND ".$this->parseFilter("`".$pre."proposals`.`Date`", $filter['Date']);
         }
+        if(isset($filter['Status'])){
+            $where .= "AND ".$this->parseFilter("`".$pre."proposals`.`status`", $filter['Status']);
+        }
         if(isset($filter['Summary'])){
-            $where .= "AND ".$this->parseFilter("`".$pre."proposals`.`Summary`", $filter['Summary']);
+            $where .= sprintf("AND `".$pre."proposals`.`Summary` LIKE '%%%s%%'", $filter['Summary']);
         }
 
         $result = mysql_query($select.$where.$orderBy);

@@ -6,10 +6,10 @@ if(isset($result[0]) && $result[0])
 {
 	die("Error (code: ".$result[0]."): ".$result[1]);
 }
-$props = $db->listProposals();
+$props = $db->listProposals(array('Status'=>"0"));
 if($props[0])
 {
-	die("Error (code: ".$result[0]."): ".$result[1]);
+	die("Error (code: ".$props[0]."): ".$props[1]);
 }
 ?><!DOCTYPE unspecified PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
