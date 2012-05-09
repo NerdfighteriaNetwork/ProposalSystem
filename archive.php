@@ -6,7 +6,7 @@ if(isset($result[0]) && $result[0])
 {
 	die("Error (code: ".$result[0]."): ".$result[1]);
 }
-$props = $db->listProposals(array('Status'=>"0"));
+$props = $db->listProposals(array('Status'=>"1,2,3"));
 if($props[0])
 {
 	die("Error (code: ".$props[0]."): ".$props[1]);
@@ -14,7 +14,7 @@ if($props[0])
 ?><!DOCTYPE unspecified PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title><?php echo $conf['title']; ?> - Current Proposals</title>
+<title><?php echo $conf['title']; ?> - Archive</title>
 </head>
 
 <body>

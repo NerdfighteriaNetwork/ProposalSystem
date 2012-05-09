@@ -28,11 +28,14 @@ if($db->auth->isLoggedIn())
 	{
 ?>
 <div style="position:absolute;top:5px;left:5px;text-align:left;">
+<form action="view.php" method="get">
+<input type="submit" value="Current Proposals" />
+</form>
+<form action="archive.php" method="get">
+<input type="submit" value="Archived Proposals" />
+</form>
 <form action="logout.php" method="post">
 <input type="submit" name="logout" value="Logout" />
-</form>
-<form action="view.php" method="get">
-<input type="submit" value="View Proposals" />
 </form>
 </div>
 <form action="post.php" method="post">
@@ -67,11 +70,14 @@ if($db->auth->isLoggedIn())
 	{
 ?>
 <div style="position:absolute;top:5px;left:5px;text-align:left;">
+<form action="view.php" method="get">
+<input type="submit" value="Current Proposals" />
+</form>
+<form action="archive.php" method="get">
+<input type="submit" value="Archived Proposals" />
+</form>
 <form action="logout.php" method="post">
 <input type="submit" name="logout" value="Logout" />
-</form>
-<form action="view.php" method="get">
-<input type="submit" value="View Proposals" />
 </form>
 </div>
 You are not a staff member.
@@ -83,7 +89,10 @@ else
 ?>
 <div style="position:absolute;top:5px;left:5px;text-align:left;">
 <form action="view.php" method="get">
-<input type="submit" value="View Proposals" />
+<input type="submit" value="Current Proposals" />
+</form>
+<form action="archive.php" method="get">
+<input type="submit" value="Archived Proposals" />
 </form>
 </div>
 <form action="login.php" method="post">
