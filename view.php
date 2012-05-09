@@ -70,7 +70,7 @@ if(isset($proplist['parent_ID']) && $proplist['parent_ID'])
 </tr>
 <tr>
 <td>SUMMARY:</td>
-<td><?php echo $proplist['Summary']; ?></td>
+<td><?php echo str_replace("\n","<br />\n",$proplist['Summary']); ?></td>
 </tr>
 </table>
 <br />
