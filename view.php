@@ -7,10 +7,6 @@ if(isset($result[0]) && $result[0])
 	die("Error (code: ".$result[0]."): ".$result[1]);
 }
 $props = $db->listProposals(array('Status'=>"0"));
-if($props[0])
-{
-	die("Error (code: ".$props[0]."): ".$props[1]);
-}
 ?><!DOCTYPE unspecified PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -31,6 +27,14 @@ Proposals are ordered Most Recent (top) to Oldest (bottom).<br />
 <br />
 <?php
 date_default_timezone_set('UTC');
+if($props[0])
+{
+?>
+Currently, there are no open proposals.
+<?php
+}
+else
+{
 foreach($props[1] as $proplist)
 {
 ?>
@@ -76,6 +80,7 @@ if(isset($proplist['parent_ID']) && $proplist['parent_ID'])
 <br />
 <br />
 <?php
+}
 }
 ?>
 </body>
