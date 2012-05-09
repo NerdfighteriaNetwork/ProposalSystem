@@ -6,9 +6,9 @@ CREATE SCHEMA IF NOT EXISTS `proposalSystem` DEFAULT CHARACTER SET utf8 ;
 USE `proposalSystem` ;
 
 -- -----------------------------------------------------
--- Table `proposalSystem`.`users`
+-- Table `proposalSystem`.`PREFIXusers`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `proposalSystem`.`users` (
+CREATE  TABLE IF NOT EXISTS `proposalSystem`.`PREFIXusers` (
   `UID` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `Username` VARCHAR(45) NOT NULL ,
   `Email` VARCHAR(45) NOT NULL ,
@@ -21,9 +21,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `proposalSystem`.`categories`
+-- Table `proposalSystem`.`PREFIXcategories`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `proposalSystem`.`categories` (
+CREATE  TABLE IF NOT EXISTS `proposalSystem`.`PREFIXcategories` (
   `idcategories` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `Name` VARCHAR(45) NOT NULL ,
   `Abbr` VARCHAR(3) NOT NULL ,
@@ -34,9 +34,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `proposalSystem`.`proposals`
+-- Table `proposalSystem`.`PREFIXproposals`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `proposalSystem`.`proposals` (
+CREATE  TABLE IF NOT EXISTS `proposalSystem`.`PREFIXproposals` (
   `idproposals` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `Proposal_ID` TINYINT UNSIGNED NOT NULL ,
   `Action` TEXT NOT NULL ,
@@ -52,21 +52,21 @@ CREATE  TABLE IF NOT EXISTS `proposalSystem`.`proposals` (
   INDEX `fk_proposals_categories1` (`categories_idcategories` ASC) ,
   CONSTRAINT `fk_proposals_users`
     FOREIGN KEY (`users_UID` )
-    REFERENCES `proposalSystem`.`users` (`UID` )
+    REFERENCES `proposalSystem`.`PREFIXusers` (`UID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_proposals_categories1`
     FOREIGN KEY (`categories_idcategories` )
-    REFERENCES `proposalSystem`.`categories` (`idcategories` )
+    REFERENCES `proposalSystem`.`PREFIXcategories` (`idcategories` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `proposalSystem`.`votes`
+-- Table `proposalSystem`.`PREFIXvotes`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `proposalSystem`.`votes` (
+CREATE  TABLE IF NOT EXISTS `proposalSystem`.`PREFIXvotes` (
   `idvotes` INT NOT NULL AUTO_INCREMENT ,
   `Votes` TINYINT(1) UNSIGNED NOT NULL ,
   `users_UID` INT UNSIGNED NOT NULL ,
@@ -76,12 +76,12 @@ CREATE  TABLE IF NOT EXISTS `proposalSystem`.`votes` (
   INDEX `fk_votes_proposals1` (`proposals_idproposals` ASC) ,
   CONSTRAINT `fk_votes_users1`
     FOREIGN KEY (`users_UID` )
-    REFERENCES `proposalSystem`.`users` (`UID` )
+    REFERENCES `proposalSystem`.`PREFIXusers` (`UID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_votes_proposals1`
     FOREIGN KEY (`proposals_idproposals` )
-    REFERENCES `proposalSystem`.`proposals` (`idproposals` )
+    REFERENCES `proposalSystem`.`PREFIXproposals` (`idproposals` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -93,14 +93,14 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Data for table `proposalSystem`.`categories`
+-- Data for table `proposalSystem`.`PREFIXcategories`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `proposalSystem`;
-INSERT INTO `proposalSystem`.`categories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'General', 'GEN');
-INSERT INTO `proposalSystem`.`categories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'IRC', 'IRC');
-INSERT INTO `proposalSystem`.`categories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'Website', 'WEB');
-INSERT INTO `proposalSystem`.`categories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'Minecraft', 'MC');
-INSERT INTO `proposalSystem`.`categories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'TeamSpeak', 'TS');
+INSERT INTO `proposalSystem`.`PREFIXcategories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'General', 'GEN');
+INSERT INTO `proposalSystem`.`PREFIXcategories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'IRC', 'IRC');
+INSERT INTO `proposalSystem`.`PREFIXcategories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'Website', 'WEB');
+INSERT INTO `proposalSystem`.`PREFIXcategories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'Minecraft', 'MC');
+INSERT INTO `proposalSystem`.`PREFIXcategories` (`idcategories`, `Name`, `Abbr`) VALUES (NULL, 'TeamSpeak', 'TS');
 
 COMMIT;
