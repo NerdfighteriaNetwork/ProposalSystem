@@ -194,7 +194,7 @@ class db {
     	global $conf;
         $pre = $conf['sql']['pre'];
         $select = "SELECT `".$pre."proposals`.`idproposals`, `".$pre."categories`.`Abbr`, `".$pre."proposals`.`Proposal_ID`, `".$pre."proposals`.`Action`, `".$pre."categories`.`Name` AS Category,".
-            "`".$pre."proposals`.`Date`, `".$pre."users`.`Username` AS Author, `".$pre."proposals`.`Summary`, `".$pre."proposals`.`parent_ID` FROM `".$pre."proposals`, `".$pre."categories`, `".$pre."users` ";
+            "`".$pre."proposals`.`Date`, `".$pre."proposals`.`status` AS Status, `".$pre."users`.`Username` AS Author, `".$pre."proposals`.`Summary`, `".$pre."proposals`.`parent_ID` FROM `".$pre."proposals`, `".$pre."categories`, `".$pre."users` ";
         $where = "WHERE `".$pre."users`.`UID` = `".$pre."proposals`.`users_UID` AND `".$pre."categories`.`idcategories` = `".$pre."proposals`.`categories_idcategories` ";
         $orderBy = sprintf("ORDER BY `".$pre."proposals`.`%s` %s", $sortBy, $order);
 

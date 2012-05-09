@@ -69,6 +69,34 @@ if(isset($proplist['parent_ID']) && $proplist['parent_ID'])
 <td><?php echo date("d-m-Y", $proplist['Date']); ?></td>
 </tr>
 <tr>
+<td>STATUS:</td>
+<td><?php
+switch($proplist['Status'])
+{
+	case 0:
+?>
+VOTING
+<?php
+		break;
+	case 1:
+?>
+REVISED
+<?php
+		break;
+	case 2:
+?>
+TABLED
+<?php
+		break;
+	case 3:
+?>
+ACCEPTED
+<?php
+		break;
+}
+?></td>
+</tr>
+<tr>
 <td>PROPOSED BY:</td>
 <td><?php echo $proplist['Author']; ?></td>
 </tr>
