@@ -81,7 +81,7 @@ class db {
             return array(6, "Could not get Proposal ID.");
         }
 
-        $date = mktime (0, 0, 0); //set date to be midnight today
+        $date = time (); //set date to the current time (it's better trust me)
         $UID = $this->auth->getUserID(); //get the current logged in User ID
 
         //insert this shit into the database, yo.
