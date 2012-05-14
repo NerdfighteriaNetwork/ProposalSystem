@@ -66,7 +66,7 @@ if(isset($proplist['parent_ID']) && $proplist['parent_ID'])
 </tr>
 <tr>
 <td>DATE:</td>
-<td><?php echo date("d-m-Y", $proplist['Date']); ?></td>
+<td><?php echo date("d F Y", $proplist['Date']); ?></td>
 </tr>
 <tr>
 <td>STATUS:</td>
