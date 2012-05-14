@@ -85,8 +85,8 @@ class db {
         $UID = $this->auth->getUserID(); //get the current logged in User ID
 
         //insert this shit into the database, yo.
-        $qry = sprintf("INSERT INTO ".$conf['sql']['pre']."proposals (`Proposal_ID`, `Action`, `Date`, `Summary`, `is_rev`, `parent_ID`, ".
-            "`users_UID`, `categories_idcategories`) VALUES ('%s', '%s', '%s', '%s', '0', NULL, '%s', '%s');",
+        $qry = sprintf("INSERT INTO ".$conf['sql']['pre']."proposals (`Proposal_ID`, `Action`, `Date`, `Summary`, `parent_ID`, ".
+            "`users_UID`, `categories_idcategories`) VALUES ('%s', '%s', '%s', '%s', NULL, '%s', '%s');",
             $id, $action, $date, $summary, $UID, $CID);
         $result = mysql_query($qry);
         if($result !== FALSE){
