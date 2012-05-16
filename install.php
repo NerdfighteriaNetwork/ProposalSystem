@@ -85,10 +85,12 @@ function getKeys(){
             }
             $varName = $key1.$key2;
             //locate variable explanation.
+            $explanation = substr($line,strpos($line,'//',8)+2);
             
             $return[] = array($varName,$explanation);
         }
     }
+    return $return;
 }
 
 if(file_exists('config.php')){
@@ -98,5 +100,8 @@ if(file_exists('config.php')){
 }else{
     //there's no configuration file, show form to make one.
     $data = getkeys();
+    print "<pre>";
+    var_dump($data);
+    die("</pre>");
 }
 ?>
